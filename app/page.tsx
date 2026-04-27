@@ -1,65 +1,200 @@
-import Image from "next/image";
+import Link from "next/link";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+import { ArrowRight, Zap, BarChart3, Brain, Shield } from "lucide-react";
 
-export default function Home() {
+const FEATURES = [
+  {
+    icon: Brain,
+    title: "Natural Language to Dashboard",
+    desc: "Just describe what analytics you need. Our AI generates fully populated charts and KPIs instantly.",
+    color: "text-violet-400",
+    bg: "bg-violet-500/10",
+  },
+  {
+    icon: BarChart3,
+    title: "6 Widget Types",
+    desc: "Metric cards, line charts, bar charts, area charts, pie charts, and data tables — all generated automatically.",
+    color: "text-cyan-400",
+    bg: "bg-cyan-500/10",
+  },
+  {
+    icon: Shield,
+    title: "Enterprise-grade Security",
+    desc: "Row-Level Security in Supabase ensures your dashboards are completely private and isolated.",
+    color: "text-emerald-400",
+    bg: "bg-emerald-500/10",
+  },
+  {
+    icon: Zap,
+    title: "Streaming Generation",
+    desc: "Watch your dashboard build in real-time as the AI streams each widget into view.",
+    color: "text-amber-400",
+    bg: "bg-amber-500/10",
+  },
+];
+
+const DEMO_STATS = [
+  { value: "< 5s", label: "Average generation time" },
+  { value: "6", label: "Widget types supported" },
+  { value: "Free", label: "Forever on Vercel" },
+  { value: "RLS", label: "Multi-tenant isolation" },
+];
+
+export default function LandingPage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex min-h-screen flex-col bg-slate-950 font-sans text-white">
+      <header className="border-b border-white/5 bg-slate-950/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500">
+              <Zap className="h-4 w-4 text-white" />
+            </div>
+            <span className="text-sm font-bold">DashGen</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <SignedOut>
+              <Link
+                href="/sign-in"
+                className="text-sm text-slate-400 transition-colors hover:text-white"
+              >
+                Sign in
+              </Link>
+              <Link
+                href="/sign-up"
+                className="rounded-xl bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-violet-500"
+              >
+                Get started free
+              </Link>
+            </SignedOut>
+            <SignedIn>
+              <Link
+                href="/dashboard"
+                className="rounded-xl bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-violet-500"
+              >
+                Go to app
+              </Link>
+            </SignedIn>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+      </header>
+
+      <main className="flex-1">
+        <section className="relative overflow-hidden py-28 text-center">
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute left-1/2 top-0 h-[600px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-violet-600/10 blur-3xl" />
+            <div className="absolute left-1/4 top-1/2 h-[400px] w-[400px] -translate-y-1/2 rounded-full bg-cyan-600/5 blur-3xl" />
+          </div>
+          <div className="relative mx-auto max-w-4xl px-4 sm:px-6">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 text-sm text-violet-300">
+              <Zap className="h-3.5 w-3.5" />
+              Powered by Google Gemini + Vercel AI SDK
+            </div>
+            <h1 className="text-5xl font-extrabold leading-tight tracking-tight sm:text-6xl md:text-7xl">
+              Analytics dashboards,{" "}
+              <span className="bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent">
+                generated by AI
+              </span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400">
+              Stop building dashboards manually. Describe what you need in plain English and
+              watch DashGen stream a fully-populated, interactive analytics view in seconds.
+            </p>
+            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+              <SignedOut>
+                <Link
+                  href="/sign-up"
+                  className="flex items-center gap-2 rounded-2xl bg-violet-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-violet-500/25 transition-all hover:bg-violet-500 hover:shadow-violet-500/40"
+                >
+                  Start for free
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </SignedOut>
+              <SignedIn>
+                <Link
+                  href="/dashboard"
+                  className="flex items-center gap-2 rounded-2xl bg-violet-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-violet-500/25 transition-all hover:bg-violet-500"
+                >
+                  Open dashboard
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </SignedIn>
+            </div>
+          </div>
+        </section>
+
+        <section className="border-y border-white/5 py-12">
+          <div className="mx-auto grid max-w-4xl grid-cols-2 gap-8 px-4 sm:grid-cols-4">
+            {DEMO_STATS.map(({ value, label }) => (
+              <div key={label} className="text-center">
+                <p className="text-3xl font-extrabold text-white">{value}</p>
+                <p className="mt-1 text-sm text-slate-500">{label}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
+            <div className="mb-16 text-center">
+              <h2 className="text-3xl font-bold text-white sm:text-4xl">
+                Everything you need, nothing you don&apos;t
+              </h2>
+              <p className="mt-4 text-slate-400">
+                A focused, production-grade stack for generative analytics.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {FEATURES.map(({ icon: Icon, title, desc, color, bg }) => (
+                <div
+                  key={title}
+                  className="group rounded-2xl border border-white/10 bg-slate-900 p-6 transition-all hover:border-white/20"
+                >
+                  <div className={`mb-4 inline-flex rounded-xl p-3 ${bg}`}>
+                    <Icon className={`h-6 w-6 ${color}`} />
+                  </div>
+                  <h3 className="mb-2 font-semibold text-white">{title}</h3>
+                  <p className="text-sm leading-relaxed text-slate-500">{desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="pb-24">
+          <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
+            <div className="rounded-3xl border border-violet-500/20 bg-gradient-to-br from-violet-900/20 to-slate-900 p-12">
+              <h2 className="text-3xl font-bold text-white">
+                Ready to generate your first dashboard?
+              </h2>
+              <p className="mx-auto mt-4 max-w-md text-slate-400">
+                Free forever on Vercel. No credit card required.
+              </p>
+              <SignedOut>
+                <Link
+                  href="/sign-up"
+                  className="mt-8 inline-flex items-center gap-2 rounded-2xl bg-violet-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-violet-500/25 transition-all hover:bg-violet-500"
+                >
+                  Get started — it&apos;s free
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </SignedOut>
+              <SignedIn>
+                <Link
+                  href="/dashboard"
+                  className="mt-8 inline-flex items-center gap-2 rounded-2xl bg-violet-600 px-8 py-4 text-base font-bold text-white"
+                >
+                  Go to my dashboards
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </SignedIn>
+            </div>
+          </div>
+        </section>
       </main>
+
+      <footer className="border-t border-white/5 py-8 text-center text-sm text-slate-600">
+        <p>© {new Date().getFullYear()} DashGen. Built with Next.js, Clerk, Supabase &amp; Google Gemini.</p>
+      </footer>
     </div>
   );
 }
