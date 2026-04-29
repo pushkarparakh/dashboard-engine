@@ -1,4 +1,4 @@
-import { google } from "@ai-sdk/google";
+import { createOpenAI } from "@ai-sdk/openai";
 import { streamObject } from "ai";
 import { auth } from "@clerk/nextjs/server";
 import { rateLimiter, redis } from "@/lib/redis";
@@ -6,6 +6,11 @@ import { DashboardGenerationSchema } from "@/lib/ai/schema";
 import { NextRequest } from "next/server";
 
 export const runtime = "edge";
+
+const groq = createOpenAI({
+  baseURL: "https://api.groq.com/openai/v1",
+  apiKey: process.env.GROQ_API_KEY,
+});
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
@@ -34,7 +39,7 @@ export async function POST(req: NextRequest) {
   }
 
   const result = streamObject({
-    model: google("gemini-2.0-flash"),
+    model: groq("llama3-70b-8192"),
     schema: DashboardGenerationSchema,
     prompt: `You are a dashboard generation AI. Given this user request, generate a complete, realistic analytics dashboard with sample data.
 
