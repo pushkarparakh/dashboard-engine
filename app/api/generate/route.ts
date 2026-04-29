@@ -1,5 +1,5 @@
 import { groq } from "@ai-sdk/groq";
-import { streamObject } from "ai";
+import { generateObject } from "ai";
 import { auth } from "@clerk/nextjs/server";
 import { rateLimiter, redis } from "@/lib/redis";
 import { DashboardGenerationSchema } from "@/lib/ai/schema";
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const result = streamObject({
+    const result = await generateObject({
       model: groq("llama-3.1-70b-versatile"),
       schema: DashboardGenerationSchema,
       prompt: `You are a dashboard generation AI. Given this user request, generate a complete, realistic analytics dashboard with sample data.
@@ -56,13 +56,8 @@ Rules:
 - Pie chart data must be objects with "name" and "value" keys`,
     });
 
-    const response = result.toTextStreamResponse();
-
-    result.object.then(async (obj) => {
-      await redis.set(cacheKey, obj, { ex: 3600 });
-    }).catch(() => {});
-
-    return response;
+    await redis.set(cacheKey, result.object, { ex: 3600 });
+    return Response.json(result.object);
   } catch (error: any) {
     console.error("Generation Error:", error);
     return new Response(JSON.stringify({ error: error.message || "Failed to generate dashboard" }), {

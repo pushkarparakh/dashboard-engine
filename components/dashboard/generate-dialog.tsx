@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { experimental_useObject as useObject } from "@ai-sdk/react";
-import { DashboardGenerationSchema } from "@/lib/ai/schema";
+import { DashboardGenerationSchema, type DashboardGeneration } from "@/lib/ai/schema";
 import { DashboardGrid } from "@/components/dashboard/dashboard-grid";
 import { Sparkles, X, Save, Loader2 } from "lucide-react";
 import type { Widget } from "@/types/dashboard";
@@ -21,16 +20,36 @@ const EXAMPLE_PROMPTS = [
 export function GenerateDialog({ onClose }: GenerateDialogProps) {
   const [prompt, setPrompt] = useState("");
   const [saving, setSaving] = useState(false);
+  const [object, setObject] = useState<DashboardGeneration | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
   const router = useRouter();
 
-  const { object, submit, isLoading, error } = useObject({
-    api: "/api/generate",
-    schema: DashboardGenerationSchema,
-  });
-
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!prompt.trim()) return;
-    submit({ prompt });
+    setIsLoading(true);
+    setError(null);
+    setObject(null);
+    
+    try {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+      
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || `Failed to generate: ${res.status}`);
+      }
+      
+      const data = await res.json();
+      setObject(data);
+    } catch (err: any) {
+      setError(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSave = async () => {
