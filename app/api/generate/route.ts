@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     return new Response("Invalid prompt", { status: 400 });
   }
 
-  const cacheKey = `generate:${userId}:${Buffer.from(prompt).toString("base64").slice(0, 64)}`;
+  const cacheKey = `generate:${userId}:${btoa(encodeURIComponent(prompt)).slice(0, 64)}`;
   const cached = await redis.get(cacheKey);
   if (cached) {
     return new Response(JSON.stringify(cached), {

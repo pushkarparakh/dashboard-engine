@@ -60,11 +60,11 @@ export function GenerateDialog({ onClose }: GenerateDialogProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
-      <div className="flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-white/10 bg-slate-950 shadow-2xl shadow-violet-500/10">
+      <div className="flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-3xl border border-teal-500/20 bg-[#0A1724] shadow-2xl shadow-teal-500/10">
         <div className="flex items-center justify-between border-b border-white/10 p-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-500/20">
-              <Sparkles className="h-5 w-5 text-violet-400" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-500/20">
+              <Sparkles className="h-5 w-5 text-teal-400" />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-white">Generate Dashboard</h2>
@@ -87,12 +87,12 @@ export function GenerateDialog({ onClose }: GenerateDialogProps) {
               onChange={(e) => setPrompt(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
               placeholder="e.g. Monthly revenue dashboard with KPIs, bar chart, and conversion funnel..."
-              className="flex-1 rounded-xl border border-white/10 bg-slate-900 px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20"
+              className="flex-1 rounded-xl border border-white/10 bg-slate-900/50 px-4 py-3 text-sm text-white placeholder-slate-600 outline-none transition-all focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20"
             />
             <button
               onClick={handleGenerate}
               disabled={isLoading || !prompt.trim()}
-              className="flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition-all hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex items-center gap-2 rounded-xl bg-teal-600 px-5 py-3 text-sm font-semibold text-white transition-all hover:bg-teal-500 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -113,7 +113,7 @@ export function GenerateDialog({ onClose }: GenerateDialogProps) {
                   <button
                     key={p}
                     onClick={() => setPrompt(p)}
-                    className="rounded-xl border border-white/5 bg-slate-900/50 px-4 py-3 text-left text-sm text-slate-400 transition-all hover:border-violet-500/30 hover:text-slate-200"
+                    className="rounded-xl border border-white/5 bg-slate-900/30 px-4 py-3 text-left text-sm text-slate-400 transition-all hover:border-teal-500/30 hover:text-slate-200"
                   >
                     {p}
                   </button>
@@ -161,7 +161,7 @@ export function GenerateDialog({ onClose }: GenerateDialogProps) {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-violet-500 disabled:opacity-50"
+              className="flex items-center gap-2 rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-teal-500 disabled:opacity-50"
             >
               {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
               Save Dashboard

@@ -35,8 +35,8 @@ export function MetricCard({ widget }: MetricCardProps) {
   const emoji = icon ? ICON_MAP[icon] ?? "📊" : "📊";
 
   return (
-    <div className="metric-card group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-900 to-slate-800 p-6 shadow-xl transition-all duration-300 hover:border-violet-500/30 hover:shadow-violet-500/10 hover:shadow-2xl">
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-600/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+    <div className="metric-card group relative overflow-hidden rounded-[24px] border border-white/5 bg-[#121E2A]/80 p-6 shadow-xl transition-all duration-300 hover:border-teal-500/30 hover:shadow-teal-500/10 hover:shadow-2xl">
+      <div className="absolute inset-0 bg-gradient-to-br from-teal-600/5 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       <div className="relative z-10">
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium text-slate-400">{title}</p>

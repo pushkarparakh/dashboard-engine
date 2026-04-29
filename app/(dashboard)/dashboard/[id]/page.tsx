@@ -96,7 +96,7 @@ export default function DashboardDetailPage({ params }: Props) {
           <div className="flex h-64 items-center justify-center rounded-2xl border border-dashed border-white/10">
             <div className="text-center">
               <p className="text-slate-400">Dashboard not found</p>
-              <Link href="/dashboard" className="mt-2 block text-sm text-violet-400 hover:underline">
+              <Link href="/dashboard" className="mt-2 block text-sm text-teal-400 hover:underline">
                 Go back
               </Link>
             </div>
@@ -106,7 +106,7 @@ export default function DashboardDetailPage({ params }: Props) {
 
       {showGenerate && (
         <div className="flex items-center gap-2 text-sm">
-          <Sparkles className="h-4 w-4 text-violet-400" />
+          <Sparkles className="h-4 w-4 text-teal-400" />
         </div>
       )}
       {showGenerate && <GenerateDialog onClose={() => setShowGenerate(false)} />}

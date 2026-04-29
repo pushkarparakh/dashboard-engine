@@ -42,21 +42,21 @@ export default function DashboardListPage() {
         {loading ? (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-40 animate-pulse rounded-2xl bg-slate-800/60" />
+              <div key={i} className="h-40 animate-pulse rounded-2xl bg-[#121E2A]/60 border border-white/5" />
             ))}
           </div>
         ) : dashboards.length === 0 ? (
-          <div className="flex h-80 flex-col items-center justify-center rounded-3xl border border-dashed border-white/10 text-center">
-            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-500/10">
-              <Sparkles className="h-8 w-8 text-violet-400" />
+          <div className="flex h-80 flex-col items-center justify-center rounded-[24px] border border-dashed border-teal-500/20 bg-gradient-to-b from-[#121E2A]/40 to-transparent text-center">
+            <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-teal-500/10 border border-teal-500/20">
+              <Sparkles className="h-8 w-8 text-teal-400" />
             </div>
             <h2 className="text-lg font-semibold text-white">No dashboards yet</h2>
-            <p className="mt-2 max-w-sm text-sm text-slate-500">
+            <p className="mt-2 max-w-sm text-sm text-slate-400">
               Create your first AI-generated dashboard by describing the analytics you need.
             </p>
             <button
               onClick={() => setShowGenerate(true)}
-              className="mt-6 flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-violet-500"
+              className="mt-6 flex items-center gap-2 rounded-xl bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-teal-500"
             >
               <Sparkles className="h-4 w-4" />
               Generate your first dashboard
