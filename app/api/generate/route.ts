@@ -33,10 +33,11 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const result = streamObject({
-    model: groq("llama3-70b-8192"),
-    schema: DashboardGenerationSchema,
-    prompt: `You are a dashboard generation AI. Given this user request, generate a complete, realistic analytics dashboard with sample data.
+  try {
+    const result = streamObject({
+      model: groq("llama-3.1-70b-versatile"),
+      schema: DashboardGenerationSchema,
+      prompt: `You are a dashboard generation AI. Given this user request, generate a complete, realistic analytics dashboard with sample data.
 
 User request: "${prompt}"
 
@@ -53,13 +54,20 @@ Rules:
 - Use realistic, domain-appropriate numbers
 - Chart data arrays must have consistent keys matching xKey and yKey
 - Pie chart data must be objects with "name" and "value" keys`,
-  });
+    });
 
-  const response = result.toTextStreamResponse();
+    const response = result.toTextStreamResponse();
 
-  result.object.then(async (obj) => {
-    await redis.set(cacheKey, obj, { ex: 3600 });
-  }).catch(() => {});
+    result.object.then(async (obj) => {
+      await redis.set(cacheKey, obj, { ex: 3600 });
+    }).catch(() => {});
 
-  return response;
+    return response;
+  } catch (error: any) {
+    console.error("Generation Error:", error);
+    return new Response(JSON.stringify({ error: error.message || "Failed to generate dashboard" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 }
