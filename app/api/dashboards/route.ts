@@ -35,10 +35,15 @@ export async function POST(req: NextRequest) {
       .select()
       .single();
 
-    if (error) return Response.json({ error: error.message }, { status: 500 });
+    if (error) {
+      console.error("Full Supabase Error:", JSON.stringify(error, null, 2));
+      return Response.json({ 
+        error: `Supabase Error: ${error.message} | Code: ${error.code || 'None'} | Details: ${error.details || 'None'}` 
+      }, { status: 500 });
+    }
     return Response.json(data, { status: 201 });
   } catch (error: any) {
     console.error("Dashboard Save Error:", error);
-    return Response.json({ error: error.message || "Failed to save dashboard" }, { status: 500 });
+    return Response.json({ error: `Server Crash: ${error.message}` }, { status: 500 });
   }
 }
