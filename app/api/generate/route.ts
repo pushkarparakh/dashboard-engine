@@ -2,6 +2,7 @@ import { groq } from "@ai-sdk/groq";
 import { generateText } from "ai";
 import { auth } from "@clerk/nextjs/server";
 import { rateLimiter, redis } from "@/lib/redis";
+import { DashboardGenerationSchema } from "@/lib/ai/schema";
 import { NextRequest } from "next/server";
 
 export const runtime = "edge";
@@ -63,8 +64,15 @@ Rules:
 - Pie chart data must be objects with "name" and "value" keys`,
     });
 
-    const cleanJson = result.text.replace(/```json/g, "").replace(/```/g, "").trim();
-    const parsedData = JSON.parse(cleanJson);
+    const match = result.text.match(/\{[\s\S]*\}/);
+    if (!match) {
+      throw new Error("AI did not return a valid JSON object.");
+    }
+    
+    const rawData = JSON.parse(match[0]);
+    
+    // Validate exactly against our schema to prevent React crashes
+    const parsedData = DashboardGenerationSchema.parse(rawData);
 
     await redis.set(cacheKey, parsedData, { ex: 3600 });
     return Response.json(parsedData);
