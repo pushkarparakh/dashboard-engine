@@ -35,10 +35,16 @@ export async function POST(req: NextRequest) {
 
   const result = streamObject({
     model: groq("llama3-70b-8192"),
+    mode: "json",
     schema: DashboardGenerationSchema,
     prompt: `You are a dashboard generation AI. Given this user request, generate a complete, realistic analytics dashboard with sample data.
 
 User request: "${prompt}"
+
+CRITICAL INSTRUCTIONS:
+- You must output RAW JSON ONLY.
+- DO NOT wrap your response in markdown backticks (e.g. \`\`\`json).
+- Your output must exactly match the provided JSON schema.
 
 Rules:
 - Generate 2-4 metric widgets with realistic values
