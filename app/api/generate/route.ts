@@ -1,8 +1,7 @@
 import { groq } from "@ai-sdk/groq";
-import { generateObject } from "ai";
+import { generateText } from "ai";
 import { auth } from "@clerk/nextjs/server";
 import { rateLimiter, redis } from "@/lib/redis";
-import { DashboardGenerationSchema } from "@/lib/ai/schema";
 import { NextRequest } from "next/server";
 
 export const runtime = "edge";
@@ -34,11 +33,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const result = await generateObject({
+    const result = await generateText({
       model: groq("llama-3.3-70b-versatile"),
-      // @ts-ignore - explicitly forcing json mode to bypass json_schema restriction on Groq Llama 3.3
-      mode: "json",
-      schema: DashboardGenerationSchema,
       prompt: `You are a dashboard generation AI. Given this user request, generate a complete, realistic analytics dashboard with sample data.
 
 User request: "${prompt}"
@@ -46,7 +42,16 @@ User request: "${prompt}"
 CRITICAL INSTRUCTIONS:
 - You must output RAW JSON ONLY.
 - DO NOT wrap your response in markdown backticks (e.g. \`\`\`json).
-- Your output must exactly match the provided JSON schema.
+- Your output must match this exact JSON structure:
+{
+  "name": "Dashboard Name",
+  "description": "Dashboard Description",
+  "widgets": [
+    // Array of widgets (metric, line_chart, bar_chart, pie_chart, area_chart, data_table)
+    // Example metric: { "type": "metric", "id": "m1", "title": "Revenue", "value": "$10,000", "trend": "up" }
+    // Example chart: { "type": "line_chart", "id": "c1", "title": "Growth", "data": [{"name": "Jan", "value": 10}], "xKey": "name", "yKey": "value" }
+  ]
+}
 
 Rules:
 - Generate 2-4 metric widgets with realistic values
@@ -58,8 +63,11 @@ Rules:
 - Pie chart data must be objects with "name" and "value" keys`,
     });
 
-    await redis.set(cacheKey, result.object, { ex: 3600 });
-    return Response.json(result.object);
+    const cleanJson = result.text.replace(/```json/g, "").replace(/```/g, "").trim();
+    const parsedData = JSON.parse(cleanJson);
+
+    await redis.set(cacheKey, parsedData, { ex: 3600 });
+    return Response.json(parsedData);
   } catch (error: any) {
     console.error("Generation Error:", error);
     return new Response(JSON.stringify({ error: error.message || "Failed to generate dashboard" }), {
