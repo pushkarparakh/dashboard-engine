@@ -35,7 +35,6 @@ export async function POST(req: NextRequest) {
 
   const result = streamObject({
     model: groq("llama3-70b-8192"),
-    mode: "json",
     schema: DashboardGenerationSchema,
     prompt: `You are a dashboard generation AI. Given this user request, generate a complete, realistic analytics dashboard with sample data.
 
