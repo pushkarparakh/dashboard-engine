@@ -55,6 +55,7 @@ export function GenerateDialog({ onClose }: GenerateDialogProps) {
   const handleSave = async () => {
     if (!object?.widgets) return;
     setSaving(true);
+    setError(null);
     try {
       const res = await fetch("/api/dashboards", {
         method: "POST",
@@ -66,10 +67,17 @@ export function GenerateDialog({ onClose }: GenerateDialogProps) {
         }),
       });
       const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to save dashboard to database");
+      }
+      
       if (data.id) {
         router.push(`/dashboard/${data.id}`);
         onClose();
       }
+    } catch (err: any) {
+      setError(err);
     } finally {
       setSaving(false);
     }
