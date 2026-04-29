@@ -1,4 +1,4 @@
-import { createOpenAI } from "@ai-sdk/openai";
+import { groq } from "@ai-sdk/groq";
 import { streamObject } from "ai";
 import { auth } from "@clerk/nextjs/server";
 import { rateLimiter, redis } from "@/lib/redis";
@@ -6,11 +6,6 @@ import { DashboardGenerationSchema } from "@/lib/ai/schema";
 import { NextRequest } from "next/server";
 
 export const runtime = "edge";
-
-const groq = createOpenAI({
-  baseURL: "https://api.groq.com/openai/v1",
-  apiKey: process.env.GROQ_API_KEY,
-});
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth();
