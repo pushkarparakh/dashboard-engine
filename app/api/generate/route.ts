@@ -36,6 +36,8 @@ export async function POST(req: NextRequest) {
   try {
     const result = await generateObject({
       model: groq("llama-3.3-70b-versatile"),
+      // @ts-ignore - explicitly forcing json mode to bypass json_schema restriction on Groq Llama 3.3
+      mode: "json",
       schema: DashboardGenerationSchema,
       prompt: `You are a dashboard generation AI. Given this user request, generate a complete, realistic analytics dashboard with sample data.
 
